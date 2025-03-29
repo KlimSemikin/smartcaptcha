@@ -7,9 +7,12 @@ module Smartcaptcha
     private
 
       def verify_smartcaptcha(options = {})
+        return true if Smartcaptcha.skip_env?
+
         model = options[:model]
         attribute = options.fetch(:attribute, :base)
         options[:host] = request.host unless options.key?(:host)
+        options[:ip] = request.remote_ip
         smartcaptcha_response = options[:response] || smartcaptcha_response_token(options[:action])
         verified = Smartcaptcha.verify_via_api_call(smartcaptcha_response, options)
         unless verified

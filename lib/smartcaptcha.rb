@@ -60,4 +60,8 @@ module Smartcaptcha
 
     I18n.translate("smartcaptcha.errors.#{key}", default: default)
   end
+
+  def self.skip_env?
+    configuration.skip_verify_env.include?(configuration.default_env)
+  end
 end
