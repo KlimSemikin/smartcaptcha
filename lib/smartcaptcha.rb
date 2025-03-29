@@ -33,8 +33,16 @@ module Smartcaptcha
     verify_hash = { 'secret' => server_key, 'token' => response }
     verify_hash['ip'] = options[:ip] if options.key?(:ip)
     reply = api_verification(verify_hash)
-    success = reply['status'] == 'ok'
+    success = reply['status'] == 'ok' &&
+      host_valid?(reply['host'], options[:host])
     success
+  end
+
+  def self.host_valid?(hostname, validation)
+    case validation
+    when nil, FalseClass then true
+    when String then validation == hostname
+    end
   end
 
   def self.api_verification(verify_hash)

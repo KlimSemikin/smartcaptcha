@@ -9,6 +9,7 @@ module Smartcaptcha
       def verify_smartcaptcha(options = {})
         model = options[:model]
         attribute = options.fetch(:attribute, :base)
+        options[:host] = request.host unless options.key?(:host)
         smartcaptcha_response = options[:response] || smartcaptcha_response_token(options[:action])
         verified = Smartcaptcha.verify_via_api_call(smartcaptcha_response, options)
         unless verified
