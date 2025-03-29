@@ -15,6 +15,10 @@ module Smartcaptcha
   class SmartcaptchaError < StandardError
   end
 
+  DEFAULT_ERRORS = {
+    verification_failed: 'SmartCaptcha verification failed, please try again'
+  }
+
   def self.configuration
     @configuration ||= Configuration.new
   end
@@ -40,5 +44,12 @@ module Smartcaptcha
     http_client = Net::HTTP.new(uri.host, uri.port)
     http_client.use_ssl = true if uri.port == 443
     JSON.parse(http_client.request(request).body)
+  end
+
+  def self.error_message(key)
+    default = DEFAULT_ERRORS.fetch(key)
+    return default unless defined?(I18n)
+
+    I18n.translate("smartcaptcha.errors.#{key}", default: default)
   end
 end

@@ -15,7 +15,7 @@ module Smartcaptcha
           smartcaptcha_error(
             model,
             attribute,
-            options.fetch(:message) { 'Проверка не пройдена!' }
+            options.fetch(:message) { Smartcaptcha.error_message(:verification_failed) }
           )
         end
         verified
