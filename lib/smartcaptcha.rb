@@ -39,6 +39,7 @@ module Smartcaptcha
   end
 
   def self.host_valid?(hostname, validation)
+    hostname.sub!(/:\d+$/, '')
     case validation
     when nil, FalseClass then true
     when String then validation == hostname
