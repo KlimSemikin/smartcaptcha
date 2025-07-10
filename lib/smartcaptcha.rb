@@ -35,6 +35,9 @@ module Smartcaptcha
     reply = api_verification(verify_hash)
     success = reply['status'] == 'ok' &&
       host_valid?(reply['host'], options[:host])
+
+    raise StandardError, reply unless success
+
     success
   end
 
